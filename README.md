@@ -10,3 +10,4 @@ This is a complete example project that implements:
 - Nintendo endpoints used are unofficial; you may need to adjust parsing if Nintendo changes responses.
 - This project is a starting point. You should test and adapt for production use (rate limiting, error handling, legal).
 "# nintendo-price-checker" 
+"# nintendo-price-checker" 
