@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend/src/db:/app/src/db
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+
+  worker:
+    build: ./worker
+    depends_on:
+      - backend
+    volumes:
+      - ./backend/src/db:/app/src/db
+    environment:
+      - COUNTRIES=US,JP,GB,DE,FR,TH
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

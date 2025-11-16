@@ -1,0 +1,13 @@
+{
+  "name": "np-worker",
+  "version": "1.0.0",
+  "main": "fetchPrices.js",
+  "scripts": {
+    "start": "node fetchPrices.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "sqlite": "^4.0.26",
+    "sqlite3": "^5.1.6"
+  }
+}
