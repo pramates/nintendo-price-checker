@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Cron Trigger to Render
         run: |
-          curl -X POST -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" https://YOUR-RENDER-BACKEND.onrender.com/api/update-prices
+          curl -X POST -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" https://nintendo-price-checker.onrender.com/api/update-prices
