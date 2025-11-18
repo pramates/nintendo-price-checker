@@ -1,23 +1,24 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { initDB, getDB } = require('./services/db');
-const gamesRouter = require('./routes/games');
-const pricesRouter = require('./routes/prices');
-const cors = require('cors');
 
-async function main(){
-  await initDB();
-  const app = express();
-  app.use(cors());
-  app.use(bodyParser.json());
+import express from "express";
+import { runPriceUpdate } from "./worker/updatePrices.js";
 
-  app.use('/api/games', gamesRouter);
-  app.use('/api/prices', pricesRouter);
+const app = express();
+app.use(express.json());
 
-  app.get('/', (req, res) => res.send('Nintendo Price Checker API'));
+app.post("/api/update-prices", async (req, res) => {
+  if (process.env.CRON_SECRET && req.headers["x-cron-secret"] !== process.env.CRON_SECRET) {
+    return res.status(403).json({ error: "unauthorized" });
+  }
+  try {
+    await runPriceUpdate();
+    res.json({ status: "ok" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error:"update failed" });
+  }
+});
 
-  const PORT = process.env.PORT || 4000;
-  app.listen(PORT, ()=> console.log(`API listening on ${PORT}`));
-}
+app.get("/", (req,res)=>res.send("Backend running"));
 
-main().catch(e=>{ console.error(e); process.exit(1); });
+const port=process.env.PORT||3000;
+app.listen(port,()=>console.log("Server running on "+port));
